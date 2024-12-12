@@ -1,6 +1,5 @@
 
 # Using Generalized Estimating Equations (GEE) to identify lifestyle predictors of Hypertension  
-
 ## Project Overview
 - **Authors:** Michelle Zong and Zeke Johansson
 - This investigation aims to explore the impact of drinking, smoking, exercise, and 
@@ -8,8 +7,13 @@ several demographic factors on the likelihood of developing hypertension. It is 
 - **Statistical Methods**: Generalized Estimating Equations (GEE), Quasi-likelihood under the Independence Model Criterion (QIC)
 - **Visualizations:** Embedded Box Plots within Violin Plots overlayed with hypertension risk categories, Spaghetti Plots, Aggregate Line Plot, Histograms, Faceted-area plots, Box and Jitter Plots
 
+#### Files and Structure
+- `KoreanHealth_Analysis.html`: Knitted R Markdown file post analysis with visualizations. 
+- `KoreanHealth_Analysis.pdf`: Knitted R Markdown file post analysis with visualizations. 
+- `KoreanHealth_Analysis.Rmd`: Main R Markdown file containing the analysis script and outputs.
+- `KoreanHealthRecords/`: Directory containing raw datasets.
 
-## Dataset Information
+#### Dataset Information
 - **Source:** [The Korean Genome and Epidemiology Study (KoGES)](https://www.kaggle.com/datasets/junsoopablo/korean-genome-and-epidemiology-study-koges)
 - **Description:** This study was conducted by a joint effort of 3 entities in Korean government, 
 the National Research Institute of Health (NIH), the Centers for Disease Control and Prevention, and 
@@ -19,22 +23,25 @@ the Ministry of Health and Welfare, Korea
 
 ## Data Manipulation
 The data underwent the following processing steps:
+
 #### Normalization:
 - The 5 separate data files, for each year participants were tested and surveyed, was read into R. Column names accross files were normalized and all 5 files were merged into 1 based on column name.
 - Various different entries for NA data were normalized.
 - Where appropriate, categorical proxies were created (SBP, Age, etc.)
 - Date cast into a date type from a string type
 - Within the same ID, missing demographic data (sex, EDU, etc.) was filled in horizontally accross the dataset based an existing value
+
 #### Filtering:
 - Created a new data subset including only relevant cleaned columns
 - Within the subset, excluded observations with missing data
 - Data was sorted by ID, and then by date. **This is a necessary step for GEE analysis.** 
 
-## Dataset Overview
+#### Resulting Dataset
 The resulting dataset used in analysis included the following variables.
 - **ID:** Unique numerical identifyer of participant
 - **EDate:** Date of data collection
 - **Year:** Year of data collection
+
 #### Independent Variables:
 - **Drinking Behavior:** 1: Non-drinker, 2: Formal drinker, 3: Regular drinker
 - **Smoking Behavior:** 1: Non-smoker, 2: Formal smoker, 3: regular smoker
@@ -43,6 +50,7 @@ The resulting dataset used in analysis included the following variables.
 - **Age category:** Children under 18, Adults 18 to 39, Adults 40-59, Adults over 60
 - **Sex:** 1: Male, 2: Female
 - **Education:** 1: Elementary or less, 2: Middle School, 3: High School, 4: Bachelor's Degree, 5: Graduate School
+
 #### Dependent Variable:
 - **SBP (Systolic Blood Pressure):** Continuous integer
 - **SBP category:** (<= 119) Healthy, (120 - 139) Pre-hypertension, (>=140) Hypertension
@@ -71,8 +79,9 @@ No specific distribution of y, just specify a mean-variance structure, some disp
     - GEE is a quasi-likelihood approach/theory since we don’t start with a probability model and no assumption is made about the distribution of Y’s observations; instead we start with the likelihood equations with the specified correlation structure (in our case, within ID’s).
     - GEE needs a lot of clusters, but a small size of cluster, which is why it was a good fit for our data that has cluster size 5 and around 1,000 clusters. 
 
-## Measuring Goodness of Fit with QIC
+#### Measuring Goodness of Fit with QIC
 The *Quasi-likelihood under the Independence Model Criterion (QIC)* was used to assess the relative fit of different GEE models on the same data set. 4 types of correlation matrices (Exchangeable, Independent, AR1, Unstructured) through the QIC analysis and compared. A lower QIC, or the smallest measure, indicates a better fit, which was the *Independent* correlation matrix. 
+
 
 ## Results Summary
 - No significant results from lifestyle factors (smoking, drinking, exercise) on SBP.
@@ -80,21 +89,17 @@ The *Quasi-likelihood under the Independence Model Criterion (QIC)* was used to 
     - **Age:** For a one year increase in age there is an increase of 0.40 in SBP (p-value: <2e-16).
     - **Education:** For every categorical increase in education, there is an incremental decrease in SBP, compared to EDU1 (elementary school or less). Graduate school decreases systolic by almost 10 compared to elementary school education level (p-value: 0.00100).
 
-## Future Work
+#### Future Work
 - Perform deeper exploration into causal relationships. Correlation does not mean causation. Is education the best preventative medicine against hypertension? There’s still so much to look into with this dataset. How do health behaviors correlate with education level? Is education a proxy for exercise? Is education enough to mitigate the negative health effects of smoking and drinking?
 
 
-## Files and Structure
-- `KoreanHealth_Analysis.html`: Knitted R Markdown file post analysis with visualizations. 
-- `KoreanHealth_Analysis.pdf`: Knitted R Markdown file post analysis with visualizations. 
-- `KoreanHealth_Analysis.Rmd`: Main R Markdown file containing the analysis script and outputs.
-- `KoreanHealthRecords/`: Directory containing raw datasets.
-
-## Requirements
+## General Information
+#### Requirements
 - R
+- RStudio (recommended)
 - Required packages: `tidyr`, `ggplot2`, `viridis`, `thematic`, `tab`, `tidyverse`, `geepack`, `dplyr`, `sjmisc`, `psych`
 
-## How to Run the Analysis
+#### How to Run the Analysis
 1. Fork the repository.
    ```bash
    git fork <repository_url>
@@ -103,5 +108,5 @@ The *Quasi-likelihood under the Independence Model Criterion (QIC)* was used to 
 3. Update the setwd filepath to one that matches your local directory.
 4. Run the R Markdown file to generate the analysis report.
 
-## Contributions
+#### Contributions
 Contributions and suggestions are welcome. Please open an issue or submit a pull request for any enhancements or corrections.
