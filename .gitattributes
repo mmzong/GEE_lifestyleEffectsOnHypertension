@@ -1,4 +1,3 @@
 * linguist-vendered
-*.Rdata
-*.Rmd
+*.Rmd linguist-vendered=false
 *.R linguist-vendered=false
